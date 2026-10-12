@@ -108,7 +108,7 @@
     border:1px solid var(--panel-line);
     border-radius:14px;
     padding:2rem 1.25rem;
-    margin-top:-1.75rem;
+    margin-top:2.5rem;
     position:relative;
     box-shadow:0 12px 30px rgba(0,0,0,0.25);
   }
@@ -257,7 +257,6 @@
 <header class="hero">
   <div class="moon" aria-hidden="true"></div>
   <h1 id="eventTitle"></h1>
-  <p class="sub" id="eventTagline"></p>
   <div class="details">
     <div><strong>When</strong><span id="eventDate"></span></div>
     <div><strong>Where</strong><span id="eventPlace"></span></div>
@@ -265,6 +264,15 @@
 </header>
 
 <main class="wrap">
+
+  <section id="about-section">
+    <h2>What the night's about</h2>
+    <div class="about-box">
+      <p>A cosy Halloween night in: <strong>crafts</strong>, <strong>fun games</strong>, and a <strong>scary movie</strong> to finish.</p>
+      <p>Not into scary films? You're welcome to hide in another room while it's on.</p>
+      <p>Please bring alcohol, snacks and a pumpkin.</p>
+    </div>
+  </section>
 
   <section id="rsvp-section">
     <span class="step-tag">Step 1</span>
@@ -288,23 +296,15 @@
     </fieldset>
 
     <div class="field" id="guestCountField" hidden>
-      <label class="lbl" for="guestCount">Do you want to bring anyone else (tbc)?</label>
+      <label class="lbl" for="guestCount">Do you want to bring someone else, and who? (To be confirmed)</label>
       <input type="text" id="guestCount" maxlength="80">
-    </div>
-  </section>
-
-  <section id="about-section">
-    <h2>What the night's about</h2>
-    <div class="about-box">
-      <p>A cosy Halloween night in: <strong>crafts</strong>, <strong>fun games</strong>, and a <strong>scary movie</strong> to finish.</p>
-      <p>Not into scary films? You're welcome to hide in another room while it's on.</p>
     </div>
   </section>
 
   <div id="details" hidden>
 
     <section id="picks-section">
-      <h2>A few quick questions</h2>
+      <h2>Activities</h2>
       <p class="lede">Tell us what you'd like to do on the night.</p>
 
       <div class="group">
@@ -319,7 +319,11 @@
         </div>
       </div>
 
-      <div class="group">
+    </section>
+
+    <section id="movie-section">
+      <h2>The movie</h2>
+      <div class="field">
         <label class="lbl" for="movieText">Is there a movie you would like to watch?</label>
         <input type="text" id="movieText" maxlength="120">
       </div>
@@ -345,9 +349,10 @@
   <section id="know-section">
     <h2>Important things to know</h2>
     <dl class="summary">
-      <dt>When</dt><dd>Thursday 29th October, 6:30pm to midnight</dd>
+      <dt>When</dt><dd>Thursday 29th October, 7pm to midnight</dd>
       <dt>Where</dt><dd>Chloe's house</dd>
       <dt>What's on</dt><dd>Crafts, fun games and a scary movie</dd>
+      <dt>Bring</dt><dd>Alcohol, snacks and a pumpkin, please.</dd>
       <dt>Scary movie</dt><dd>Not your thing? Hide in another room while it's on.</dd>
       <dt>Dress up</dt><dd>Only if you want to. Costumes are optional.</dd>
       <dt>Your reply</dt><dd>Send your answers above so Chloe knows who's coming.</dd>
@@ -361,8 +366,7 @@
 <script>
 const CONFIG = {
   eventTitle: "The Hallows' Eve Gathering",
-  tagline: "Crafts by candlelight, a movie under blankets, and the last warm cider of the season.",
-  date: "Thursday 29th October · 6:30pm to midnight",
+  date: "Thursday 29th October · 7pm to midnight",
   place: "Chloe's house",
   host: "Chloe",
   activityOptions: ["Pumpkin carving", "Wrap the mummy", "Halloween quiz", "Tarot cards"],
@@ -391,7 +395,6 @@ function escapeHtml(s){
 }
 
 $('eventTitle').textContent = CONFIG.eventTitle;
-$('eventTagline').textContent = CONFIG.tagline;
 $('eventDate').textContent = CONFIG.date;
 $('eventPlace').textContent = CONFIG.place;
 $('hostName').textContent = CONFIG.host;
