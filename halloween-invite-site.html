@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hallows' Eve Invite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout: full-width hero, then one narrow column of form sections, ending in a copyable reply. Single dark look by choice. */
+  :root{
+    --night:#1c1420;
+    --night-deep:#14101a;
+    --panel:#2a1e2f;
+    --panel-line:#4a3a4f;
+    --pumpkin:#d97a2b;
+    --pumpkin-dim:#a85f22;
+    --moss:#8d9d6b;
+    --cream:#f2e8d8;
+    --cream-dim:#c9bda8;
+    --error:#e0714d;
+    --display:'Fraunces', Georgia, serif;
+    --body:'Space Grotesk', system-ui, sans-serif;
+    color-scheme:dark;
+  }
+  body{
+    background:var(--night);
+    color:var(--cream);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.5;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  body{margin:0;}
+
+  .hero{
+    padding:4rem 1rem 3.5rem;
+    text-align:center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(217,122,43,0.18), transparent 45%),
+      radial-gradient(circle at 80% 10%, rgba(122,138,90,0.15), transparent 40%),
+      var(--night-deep);
+    border-bottom:1px solid var(--panel-line);
+  }
+  .moon{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--cream);
+    margin:0 auto 1.75rem;
+    box-shadow:0 0 40px rgba(242,232,216,0.35);
+    position:relative;
+    overflow:hidden;
+  }
+  .moon::after{
+    content:'';position:absolute;top:-6px;left:14px;
+    width:64px;height:64px;border-radius:50%;
+    background:var(--night-deep);
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-style:italic;
+    font-size:clamp(2rem, 8vw, 2.75rem);
+    line-height:1.1;
+    margin:0 0 .85rem;
+    text-wrap:balance;
+  }
+  .hero .sub{
+    color:var(--cream-dim);
+    max-width:26rem;
+    margin:0 auto;
+    text-wrap:balance;
+  }
+  .details{
+    display:flex;
+    justify-content:center;
+    gap:1rem 2rem;
+    flex-wrap:wrap;
+    margin-top:2rem;
+    font-size:.9rem;
+    color:var(--cream-dim);
+  }
+  .details strong{
+    display:block;
+    color:var(--pumpkin);
+    font-size:.78rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:.15rem;
+  }
+
+  .wrap{max-width:40rem;margin-inline:auto;padding-inline:1rem;padding-block:0 4rem;}
+  section{padding-block:2.5rem;border-bottom:1px solid var(--panel-line);}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:1.6rem;
+    line-height:1.2;
+    margin:0 0 .5rem;
+    text-wrap:balance;
+  }
+  .lede{color:var(--cream-dim);margin:0 0 1.25rem;}
+
+  #rsvp-section{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:14px;
+    padding:2rem 1.25rem;
+    margin-top:-1.75rem;
+    position:relative;
+    box-shadow:0 12px 30px rgba(0,0,0,0.25);
+  }
+  .step-tag{
+    display:inline-block;
+    font-size:.75rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--pumpkin);
+    border:1px solid var(--pumpkin-dim);
+    padding:.15rem .65rem;
+    border-radius:99px;
+    margin-bottom:.85rem;
+  }
+
+  .field{margin-bottom:1rem;border:0;padding:0;min-width:0;}
+  label.lbl, legend{display:block;font-size:.85rem;color:var(--cream-dim);margin-bottom:.4rem;padding:0;}
+  input[type=text], input[type=number]{
+    width:100%;
+    background:var(--night);
+    border:1px solid var(--panel-line);
+    color:var(--cream);
+    padding:.7rem .8rem;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:1rem;
+  }
+  input[type=text]:focus-visible, input[type=number]:focus-visible{outline:2px solid var(--pumpkin);outline-offset:1px;}
+  .input-error{border-color:var(--error) !important;}
+  .field-error{color:var(--error);font-size:.85rem;margin:.4rem 0 0;}
+
+  .choices{display:grid;gap:.5rem;}
+  .choices.two{grid-template-columns:1fr 1fr;}
+  label.choice{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+    padding:.75rem .9rem;
+    background:var(--night);
+    border:1px solid var(--panel-line);
+    border-radius:8px;
+    cursor:pointer;
+    min-width:0;
+  }
+  #details label.choice, .plain label.choice{background:var(--panel);}
+  label.choice input{accent-color:var(--pumpkin);width:1.05rem;height:1.05rem;flex:none;margin:0;}
+  label.choice:has(input:checked){border-color:var(--pumpkin);background:rgba(217,122,43,0.12);}
+  label.choice:has(input:focus-visible){outline:2px solid var(--pumpkin);outline-offset:1px;}
+
+  .about-box{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:1.25rem;
+    color:var(--cream-dim);
+  }
+  .about-box p{margin:0 0 .75rem;}
+  .about-box p:last-child{margin:0;}
+  .about-box strong{color:var(--cream);font-weight:600;}
+  .about-box .dress{padding-top:.75rem;border-top:1px solid var(--panel-line);color:var(--cream);}
+
+  .group{margin-bottom:2rem;}
+  .group:last-child{margin-bottom:0;}
+  .group h3{font-size:1rem;font-weight:600;color:var(--pumpkin);margin:0 0 .75rem;}
+  .ideas{display:grid;gap:.5rem;margin-top:.75rem;}
+  .ideas-label{font-size:.85rem;color:var(--cream-dim);margin:1rem 0 0;}
+
+  button.primary{
+    width:100%;
+    padding:.85rem;
+    background:var(--pumpkin);
+    color:var(--night-deep);
+    border:0;
+    border-radius:8px;
+    font-family:inherit;
+    font-weight:600;
+    font-size:1rem;
+    cursor:pointer;
+  }
+  button.primary:hover{background:#e8873c;}
+  button.primary:focus-visible, button.ghost:focus-visible{outline:2px solid var(--cream);outline-offset:2px;}
+  button.ghost{
+    background:none;
+    border:1px solid var(--pumpkin-dim);
+    color:var(--pumpkin);
+    padding:.65rem 1rem;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:.95rem;
+    cursor:pointer;
+  }
+
+  .reply{
+    margin-top:1.5rem;
+    border:1px solid var(--moss);
+    background:rgba(141,157,107,0.1);
+    border-radius:10px;
+    padding:1.25rem;
+  }
+  .reply h3{font-family:var(--display);font-size:1.25rem;margin:0 0 .35rem;}
+  .reply p{margin:0 0 .85rem;color:var(--cream-dim);}
+  .reply textarea{
+    width:100%;
+    min-height:11rem;
+    background:var(--night);
+    border:1px solid var(--panel-line);
+    border-radius:8px;
+    color:var(--cream);
+    font-family:inherit;
+    font-size:.95rem;
+    line-height:1.55;
+    padding:.8rem;
+    resize:vertical;
+  }
+  .reply .row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-top:.75rem;}
+  .status{font-size:.9rem;color:var(--moss);margin:0;}
+
+  .sent{margin-top:1rem;font-size:1rem;}
+  dl.summary{
+    display:grid;
+    grid-template-columns:minmax(5.5rem, 7rem) 1fr;
+    gap:.75rem 1rem;
+    margin:0;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:1.25rem;
+  }
+  dl.summary dt{color:var(--pumpkin);font-weight:600;min-width:0;}
+  dl.summary dd{margin:0;color:var(--cream);min-width:0;}
+  footer{text-align:center;padding:2rem 1rem 3rem;color:var(--cream-dim);font-size:.85rem;}
+
+  .choices.three{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:420px){
+    .choices.two{grid-template-columns:1fr;}
+    .choices.three label.choice{padding:.75rem .6rem;gap:.5rem;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+    .rise{animation:rise .35s ease both;}
+  }
+</style>
+
+</head>
+<body>
+<header class="hero">
+  <div class="moon" aria-hidden="true"></div>
+  <h1 id="eventTitle"></h1>
+  <p class="sub" id="eventTagline"></p>
+  <div class="details">
+    <div><strong>When</strong><span id="eventDate"></span></div>
+    <div><strong>Where</strong><span id="eventPlace"></span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="rsvp-section">
+    <span class="step-tag">Step 1</span>
+    <h2>Will you be there?</h2>
+    <p class="lede">Add your name and let us know. Then fill in your picks and send them to the host.</p>
+
+    <div class="field">
+      <label class="lbl" for="guestName">What is your name?</label>
+      <input type="text" id="guestName" autocomplete="name">
+      <p class="field-error" id="nameError" hidden>Enter your name.</p>
+    </div>
+
+    <fieldset class="field">
+      <legend>Are you able to come?</legend>
+      <div class="choices three">
+        <label class="choice"><input type="radio" name="attending" value="yes"> <span>Yes</span></label>
+        <label class="choice"><input type="radio" name="attending" value="no"> <span>No</span></label>
+        <label class="choice"><input type="radio" name="attending" value="maybe"> <span>Maybe</span></label>
+      </div>
+      <p class="field-error" id="attendingError" hidden>Choose Yes, No or Maybe.</p>
+    </fieldset>
+
+    <div class="field" id="guestCountField" hidden>
+      <label class="lbl" for="guestCount">Do you want to bring anyone else (tbc)?</label>
+      <input type="text" id="guestCount" maxlength="80">
+    </div>
+  </section>
+
+  <section id="about-section">
+    <h2>What the night's about</h2>
+    <div class="about-box">
+      <p>A cosy Halloween night in: <strong>crafts</strong>, <strong>fun games</strong>, and a <strong>scary movie</strong> to finish.</p>
+      <p>Not into scary films? You're welcome to hide in another room while it's on.</p>
+    </div>
+  </section>
+
+  <div id="details" hidden>
+
+    <section id="picks-section">
+      <h2>A few quick questions</h2>
+      <p class="lede">Tell us what you'd like to do on the night.</p>
+
+      <div class="group">
+        <fieldset class="field">
+          <legend>What activities would you like to do?</legend>
+          <div class="choices" id="activityChoices"></div>
+          <p class="field-error" id="activityError" hidden>Pick at least one activity.</p>
+        </fieldset>
+        <p class="ideas-label">Other:</p>
+        <div class="ideas">
+          <input type="text" id="activityIdea1" aria-label="Other activity" maxlength="80">
+        </div>
+      </div>
+
+      <div class="group">
+        <label class="lbl" for="movieText">Is there a movie you would like to watch?</label>
+        <input type="text" id="movieText" maxlength="120">
+      </div>
+    </section>
+
+  </div>
+
+  <section id="send-section">
+    <button class="primary" id="makeReply" type="button">Send my reply</button>
+    <p class="status sent" id="sentMsg" role="status" hidden></p>
+
+    <div class="reply rise" id="reply" hidden>
+      <h3>Send this to <span id="hostName"></span> instead</h3>
+      <p id="replyNote"></p>
+      <textarea id="replyText" readonly aria-label="Your reply"></textarea>
+      <div class="row">
+        <button class="ghost" id="copyBtn" type="button">Copy reply</button>
+        <p class="status" id="copyStatus" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="know-section">
+    <h2>Important things to know</h2>
+    <dl class="summary">
+      <dt>When</dt><dd>Thursday 29th October, 6:30pm to midnight</dd>
+      <dt>Where</dt><dd>Chloe's house</dd>
+      <dt>What's on</dt><dd>Crafts, fun games and a scary movie</dd>
+      <dt>Scary movie</dt><dd>Not your thing? Hide in another room while it's on.</dd>
+      <dt>Dress up</dt><dd>Only if you want to. Costumes are optional.</dd>
+      <dt>Your reply</dt><dd>Send your answers above so Chloe knows who's coming.</dd>
+    </dl>
+  </section>
+
+</main>
+
+<footer>A night of crafts, a movie, and autumn air.</footer>
+
+<script>
+const CONFIG = {
+  eventTitle: "The Hallows' Eve Gathering",
+  tagline: "Crafts by candlelight, a movie under blankets, and the last warm cider of the season.",
+  date: "Thursday 29th October · 6:30pm to midnight",
+  place: "Chloe's house",
+  host: "Chloe",
+  activityOptions: ["Pumpkin carving", "Wrap the mummy", "Halloween quiz", "Tarot cards"],
+  movieOptions: ["Hocus Pocus", "Coraline", "The Nightmare Before Christmas"],
+
+  // ---- GOOGLE FORM CONNECTION ----
+  formAction: "https://docs.google.com/forms/d/e/1FAIpQLSeHHqVeUoZQVM87IhS_qUYig0VQE4glkvHVZfN5Q72mlhlFBg/formResponse",
+  // One entry id per form question.
+  entries: {
+    coming: "entry.740822596",
+    name: "entry.159747768",
+    guests: "entry.19689422",
+    movie: "entry.2104515028",
+    activity: "entry.951722027",
+    activityIdeas: "",
+    movieIdeas: ""
+  }
+};
+
+const $ = id => document.getElementById(id);
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+$('eventTitle').textContent = CONFIG.eventTitle;
+$('eventTagline').textContent = CONFIG.tagline;
+$('eventDate').textContent = CONFIG.date;
+$('eventPlace').textContent = CONFIG.place;
+$('hostName').textContent = CONFIG.host;
+
+function renderChoices(containerId, groupName, options){
+  $(containerId).innerHTML = options.map(opt =>
+    '<label class="choice"><input type="radio" name="' + groupName + '" value="' + escapeHtml(opt) + '"> <span>' + escapeHtml(opt) + '</span></label>'
+  ).join('');
+}
+$('activityChoices').innerHTML = CONFIG.activityOptions.map(opt =>
+  '<label class="choice"><input type="checkbox" name="activity" value="' + escapeHtml(opt) + '"> <span>' + escapeHtml(opt) + '</span></label>'
+).join('');
+
+function checkedValue(name){
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : null;
+}
+function checkedValues(name){
+  return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(el => el.value);
+}
+function showError(id, inputId){
+  $(id).hidden = false;
+  if(inputId) $(inputId).classList.add('input-error');
+}
+function clearError(id, inputId){
+  $(id).hidden = true;
+  if(inputId) $(inputId).classList.remove('input-error');
+}
+
+function syncAttending(){
+  const v = checkedValue('attending');
+  const going = v === 'yes' || v === 'maybe';
+  $('details').hidden = !going;
+  $('guestCountField').hidden = !going;
+  if(v) clearError('attendingError');
+  $('reply').hidden = true;
+}
+document.querySelectorAll('input[name="attending"]').forEach(el => el.addEventListener('change', syncAttending));
+$('guestName').addEventListener('input', () => clearError('nameError', 'guestName'));
+['activity'].forEach(g => {
+  document.querySelectorAll('input[name="' + g + '"]').forEach(el =>
+    el.addEventListener('change', () => clearError(g + 'Error'))
+  );
+});
+
+function collectAnswers(){
+  const answer = checkedValue('attending');
+  const attending = answer === 'yes' || answer === 'maybe';
+  const v = id => $(id).value.trim();
+  const join = ids => ids.map(v).filter(Boolean).join('; ');
+  return {
+    name: v('guestName'),
+    coming: answer === 'yes' ? 'Yes' : answer === 'maybe' ? 'Maybe' : 'No',
+    guests: attending ? v('guestCount') : '',
+    activity: attending ? checkedValues('activity') : [],
+    movie: attending ? v('movieText') : '',
+    activityIdeas: attending ? join(['activityIdea1']) : '',
+    movieIdeas: '',
+  };
+}
+
+function buildReply(a){
+  const lines = [CONFIG.eventTitle + ' - reply from ' + a.name];
+  if(a.coming === 'No'){ lines.push("Can't make it."); return lines.join('\n'); }
+  lines.push('Able to come: ' + a.coming);
+  if(a.guests) lines.push('Bringing anyone else: ' + a.guests);
+  lines.push('Activities: ' + a.activity.concat(a.activityIdeas ? ['other: ' + a.activityIdeas] : []).join(', '));
+  if(a.movie) lines.push('Movie: ' + a.movie);
+  return lines.join('\n');
+}
+
+function formConnected(){
+  return /^https:\/\/docs\.google\.com\/forms\/.+\/formResponse/.test(CONFIG.formAction || '');
+}
+
+async function sendToForm(a){
+  const body = new URLSearchParams();
+  const add = (key, value) => {
+    const entry = CONFIG.entries[key];
+    if(entry && value) body.append(entry, value);
+  };
+  add('name', a.name);
+  add('coming', a.coming);
+  add('guests', a.guests);
+  add('movie', [a.movie, a.movieIdeas && 'also suggested: ' + a.movieIdeas].filter(Boolean).join('; '));
+  const act = CONFIG.entries.activity;
+  if(act){
+    a.activity.forEach(x => body.append(act, x));
+    if(a.activityIdeas){
+      body.append(act, '__other_option__');
+      body.append(act + '.other_option_response', a.activityIdeas);
+    }
+  }
+  // Google Forms does not return a readable response to other sites, so a
+  // resolved request is the best confirmation available.
+  await fetch(CONFIG.formAction, { method: 'POST', mode: 'no-cors', body });
+}
+
+function showFallback(a, note){
+  $('replyNote').textContent = note;
+  $('replyText').value = buildReply(a);
+  $('copyStatus').textContent = '';
+  $('reply').hidden = false;
+  $('reply').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+$('makeReply').addEventListener('click', async () => {
+  let bad = null;
+  const flag = (id, inputId, anchor) => { showError(id, inputId); if(!bad) bad = anchor; };
+
+  if(!$('guestName').value.trim()) flag('nameError', 'guestName', $('guestName'));
+  const att = checkedValue('attending');
+  if(!att) flag('attendingError', null, $('attendingError'));
+
+  if(att === 'yes' || att === 'maybe'){
+    if(!checkedValues('activity').length) flag('activityError', null, $('activityError'));
+  }
+
+  $('reply').hidden = true;
+  $('sentMsg').hidden = true;
+
+  if(bad){
+    bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const answers = collectAnswers();
+
+  if(!formConnected()){
+    showFallback(answers, "This page isn't connected to the form yet. Copy your reply and send it to " + CONFIG.host + " in a message.");
+    return;
+  }
+
+  const btn = $('makeReply');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try{
+    await sendToForm(answers);
+    btn.hidden = true;
+    const msg = $('sentMsg');
+    msg.textContent = 'Thanks, ' + answers.name + '. Your reply has been sent to ' + CONFIG.host + '. To change it, reload the page and send again. Only your latest reply counts.';
+    msg.hidden = false;
+  }catch(e){
+    btn.disabled = false;
+    btn.textContent = 'Send my reply';
+    showFallback(answers, "Your reply didn't send, possibly because you're offline. Try again, or copy it and send it to " + CONFIG.host + " in a message.");
+  }
+});
+
+$('copyBtn').addEventListener('click', async () => {
+  const ta = $('replyText');
+  const status = $('copyStatus');
+  try{
+    await navigator.clipboard.writeText(ta.value);
+    status.textContent = 'Copied. Paste it into your message to ' + CONFIG.host + '.';
+  }catch(e){
+    ta.focus();
+    ta.select();
+    status.textContent = 'Select the text above and copy it.';
+  }
+});
+</script>
+</body>
+</html>
